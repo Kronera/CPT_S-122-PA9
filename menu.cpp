@@ -51,7 +51,7 @@ void Menu::loop_events() {
         if (event.type == sf::Event::Closed) {
             window->close();
         }
-        draw_all();
+        
         if (sf::Keyboard::isKeyPressed(sf::Keyboard::Down) && !pressed) {
             if (pos < 3) {
                 ++pos;
@@ -60,6 +60,8 @@ void Menu::loop_events() {
                 texts[pos - 1].setOutlineThickness(0);
                 pressed = false;
                 theselect = false;
+                bg->setTexture(*image);
+                draw_all();
             }
         }
 
@@ -71,17 +73,25 @@ void Menu::loop_events() {
                 texts[pos + 1].setOutlineThickness(0);
                 pressed = false;
                 theselect = false;
+                bg->setTexture(*image);
+                draw_all();
             }
         }
 
         if (sf::Keyboard::isKeyPressed(sf::Keyboard::Enter) && !theselect) {
             theselect = true;
+            if (pos == 1)
+            {
+                
+            }
             if (pos == 3) {
                 window->close();
             }
             if (pos == 2) {
+                window->clear();
                 bg->setTexture(*cred);
-                
+                window->draw(*bg);
+                window->display();
             }
             std::cout << options[pos] << '\n';
         }
@@ -90,6 +100,7 @@ void Menu::loop_events() {
 }
 
 void Menu::run_menu() {
+    draw_all();
     while (window->isOpen()) {
         loop_events();
     }
@@ -101,6 +112,7 @@ void Menu::draw_all() {
     for (auto t : texts) {
         window->draw(t);
     }
+
     window->display();
 }
 
