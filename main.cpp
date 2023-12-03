@@ -10,6 +10,11 @@
 
 
 int main() {
+    Menu* menu = new Menu();
+    menu->run_menu();
+    delete menu;
+    menu = nullptr;
+    //Border
     Grid board[4][8];
     int index = 1, totalElements = 32;
     std::srand(std::time(0));
