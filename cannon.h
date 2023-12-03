@@ -8,6 +8,6 @@ public:
         //same order as cart.
         _captured_hierarchy = 2;
         //can capture anyone.
-        _capturing_hierarchy = 100;
+        _capturing_hierarchy = 9;
     }
 };
