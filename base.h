@@ -52,7 +52,7 @@ public:
 
     //returns isred but in number form (1 for true and otherwise)
     int isredn() {
-        if (isred) return 1;
+        if (isred()) return 1;
         return 0;
 
     }
