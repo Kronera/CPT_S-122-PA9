@@ -14,6 +14,31 @@ int main() {
     menu->run_menu();
     delete menu;
     menu = nullptr;
+    sf::RenderWindow window(sf::VideoMode(800, 400), "BANQI!"); // create new window
+
+    sf::Texture* board;
+    sf::Sprite* bg;
+
+    board = new sf::Texture();
+    bg = new sf::Sprite();
+
+    board->loadFromFile("./Board.jpg"); //load jpg
+    bg->setTexture(*board); //set sprite to board jpg
+
+    while (window.isOpen()) // loop while open
+    {
+        sf::Event event;
+        while (window.pollEvent(event))
+        {
+            if (event.type == sf::Event::Closed){ // conditional
+                window.close();
+            }
+        }
+
+        window.clear();
+        window.draw(*bg); //draw board WIP
+        window.display();
+    }
     //Border
     Grid board[4][8];
     int index = 1, totalElements = 32;
