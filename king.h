@@ -6,8 +6,8 @@ public:
     King(bool isred) : Base(isred) {
         _name = "King";
         //can capture anyone but pawn.
-        _captured_hierarchy = 10;
+        _captured_hierarchy = 8;
         //can only be captured by pawn.
-        _capturing_hierarchy = 10;
+        _capturing_hierarchy = 8;
     }
 };
