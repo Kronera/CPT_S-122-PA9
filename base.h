@@ -33,6 +33,30 @@ public:
 
     virtual ~Base();
     virtual void move(int x, int y);
+    string getname() {
+        return _name;
+    } 
+    //shortened for capturing hierachy.
+    int getpower() {
+        return _capturing_hierarchy;
+    }
+
+    //shortened for captured hierachy
+    int getdefense() {
+        return _captured_hierarchy;
+    }
+
+    bool isred() {
+        return _is_red;
+    }
+
+    //returns isred but in number form (1 for true and otherwise)
+    int isredn() {
+        if (isred) return 1;
+        return 0;
+
+    }
+
 
 protected:
     static double _radius;
