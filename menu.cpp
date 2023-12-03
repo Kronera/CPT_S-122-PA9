@@ -28,7 +28,7 @@ void Menu::set_values() {
 
     bg->setTexture(*image);
 
-    options = { "Baqi", "Play", "Credits", "Quit" };
+    options = { "Banqi", "Play", "Credits", "Quit" };
     texts.resize(4);
     coords = { {800,30},{720,191},{700,282},{690,370}};
     sizes = { 50,40,35,35 };
