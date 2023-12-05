@@ -116,15 +116,16 @@ int main() {
     Grid board[4][8];
     int index = 1, totalElements = 32, x = 0, y = 0, options = 0, isred = 0;
     //-1 if not decided, 1 if its red, 0 if its black.
-    int player1color = -1, currentcolor = -1, placeholder = 0;
+    int player1color = -1, currentcolor = -1, placeholder = 0, interval1 = 0, interval2 = 0;
     std::srand(std::time(0));
     bool isgameover = false, player1turn = false;
-    //this is for the moves in South West East and North cordinates
+    //this is for the valid moves in South West East and North cordinates
     /*   N
        W   E
          S
     */   
     bool South = false, North = false, East = false, West = false;
+    int intervalS = 0, intervalN = 0, intervalW = 0, intervalE = 0;
     char userinput = '\0';
 
     //initialize the board by putting in pieces in order.
@@ -303,7 +304,7 @@ int main() {
                 //this is for non cannon pieces.
                 placeholder = 10;
                 //for now, we will treat cannon as a piece that can capture anyone but can be captured by anyone.
-                if (!(board[y][x].getchess()->getpower() == placeholder)) {
+                if (!(board[y][x].getchess()->getpower() == 9)) {
                     //if there are no options to move, then its an invalid move.
                     options = 0;
                     South = false, North = false, West = false, East = false;
@@ -315,12 +316,12 @@ int main() {
                         //if its not empty
                         if (!(board[y][x].isEmpty()) && board[y][x].revealstatus()) {
                             //if the piece is the opposite color and capturable
-                            if (!(board[y - 1][x].getchess()->isredn() == currentcolor)) {
+                            if (!(board[y + 1][x].getchess()->isredn() == currentcolor)) {
                                 //special case for king
                                 if (board[y][x].getchess()->getpower() == 8) {
                                     //is a king!
                                     //if it is not a pawn, then it is capturable.
-                                    if (!(board[y - 1][x].getchess()->getpower() == 1)) {
+                                    if (!(board[y + 1][x].getchess()->getpower() == 1)) {
                                         South = true;
                                         options++;
                                         cout << "South" << endl;
@@ -329,14 +330,14 @@ int main() {
                                 //special case for pawn
                                 else if (board[y][x].getchess()->getpower() == 1) {
                                     //is only valid if its another pawn OR a king.
-                                    if (board[y - 1][x].getchess()->getpower() == 8 || board[y - 1][x].getchess()->getpower() == 1) {
+                                    if (board[y + 1][x].getchess()->getpower() == 8 || board[y + 1][x].getchess()->getpower() == 1) {
                                         South = true;
                                         options++;
                                         cout << "South" << endl;
                                     }
                                 }
                                 else {
-                                    if (board[y][x].getchess()->getpower() >= board[y - 1][x].getchess()->getdefense()) {
+                                    if (board[y][x].getchess()->getpower() >= board[y + 1][x].getchess()->getdefense()) {
                                         South = true;
                                         options++;
                                         cout << "South" << endl;
@@ -355,12 +356,12 @@ int main() {
                         //if its not empty
                         if (!(board[y][x].isEmpty()) && board[y][x].revealstatus()) {
                             //if the piece is the opposite color and capturable
-                            if (!(board[y + 1][x].getchess()->isredn() == currentcolor)) {
+                            if (!(board[y - 1][x].getchess()->isredn() == currentcolor)) {
                                 //special case for king
                                 if (board[y][x].getchess()->getpower() == 8) {
                                     //is a king!
                                     //if it is not a pawn, then it is capturable.
-                                    if (!(board[y + 1][x].getchess()->getpower() == 1)) {
+                                    if (!(board[y - 1][x].getchess()->getpower() == 1)) {
                                         North = true;
                                         options++;
                                         cout << "North" << endl;
@@ -369,14 +370,14 @@ int main() {
                                 //special case for pawn
                                 else if (board[y][x].getchess()->getpower() == 1) {
                                     //is only valid if its another pawn OR a king.
-                                    if (board[y + 1][x].getchess()->getpower() == 8 || board[y + 1][x].getchess()->getpower() == 1) {
+                                    if (board[y - 1][x].getchess()->getpower() == 8 || board[y - 1][x].getchess()->getpower() == 1) {
                                         North = true;
                                         options++;
                                         cout << "North" << endl;
                                     }
                                 }
                                 else {
-                                    if (board[y][x].getchess()->getpower() >= board[y + 1][x].getchess()->getdefense()) {
+                                    if (board[y][x].getchess()->getpower() >= board[y - 1][x].getchess()->getdefense()) {
                                         North = true;
                                         options++;
                                         cout << "North" << endl;
@@ -467,28 +468,24 @@ int main() {
                                     }
                                 }
 
-                                //there is no possible move.
-                                if (options == 0) {
-                                    cout << "Invalid move : no possible moves" << endl;
-                                }
-                                else {
-                                    userinput = '\0';
-                                    userinput = getdirection();
-
-
-
-
-
-                                }
-
 
 
                             }
                         }
                     }
+                    //there is no possible move.
+                    if (options == 0) {
+                        cout << "Invalid move : no possible moves" << endl;
+                        userinput = '\0';
+                    }
+                    else {
+                         userinput = '\0';
+                         userinput = getdirection();
+                    }
+
                     userinput = tolower(userinput);
                     if (userinput == 's' && South) {
-                        delete board[y - 1][x].getchess();
+                        delete board[y + 1][x].getchess();
                         board[y + 1][x].assign(board[y][x].getchess());
                         board[y][x].assign(nullptr);
 
@@ -540,9 +537,180 @@ int main() {
                         }
                     }
 
-                    //special case for cannon's moves.
                 } else {
-                
+                    //this is for cannon.
+                    options = 0;
+                    South = false, North = false, West = false, East = false;
+                    cout << "Available moves: " << endl;
+
+                    //check South
+                    //cannon needs atleast 2 space to move. 
+                    if (((y+2) >= 0)) {
+                        //interval needs to be atlesat 1
+                        interval1 = 1;
+                        intervalS = 1;
+
+                        //go to next solid piece.
+                        while (board[y + interval1][x].isEmpty() && ((y + interval1) >= 0)) {
+                            interval1++;
+                        } //go to next non empty piece
+                        intervalS = interval1 + 1;
+                        while (board[y + intervalS][x].isEmpty() && ((y + intervalS) >= 0)) {
+                            intervalS++;
+                        }
+                        //condition 1: either interval cannot be out of bound
+                        //condition 2: second piece has to be an opposite color
+                        if ((y + intervalS) >= 0 && (y + interval1) >= 0) {
+                            if (board[y + intervalS][x].getchess()->isredn() != currentcolor) {
+                                South = true;
+                                options++;
+                                cout << "South" << endl;
+                            }
+                        }
+                    }
+
+
+                    //check North
+                    //cannon needs atleast 2 space to move. 
+                    if (((y - 2) >= 0)) {
+                        //interval needs to be atlesat 1
+                        interval1 = 1;
+                        intervalN = 1;
+
+                        //go to next solid piece.
+                        while (board[y - interval1][x].isEmpty() && ((y - interval1) >= 0)) {
+                            interval1++;
+                        } //go to next non empty piece
+                        intervalN = interval1 + 1;
+                        while (board[y - intervalN][x].isEmpty() && ((y - intervalN) >= 0)) {
+                            intervalN++;
+                        }
+                        //condition 1: either interval cannot be out of bound
+                        //condition 2: second piece has to be an opposite color
+                        if ((y - intervalN) >= 0 && (y - interval1) >= 0) {
+                            if (board[y - intervalN][x].getchess()->isredn() != currentcolor) {
+                                North = true;
+                                options++;
+                                cout << "North" << endl;
+                            }
+                        }
+                    }
+
+
+                    //check West
+                    //cannon needs atleast 2 space to move. 
+                    if (((x - 2) >= 0)) {
+                        //interval needs to be atlesat 1
+                        interval1 = 1;
+                        intervalW = 1;
+
+                        //go to next solid piece.
+                        while (board[y][x - interval1].isEmpty() && ((x - interval1) >= 0)) {
+                            interval1++;
+                        } //go to next non empty piece
+                        intervalW = interval1 + 1;
+                        while (board[y][x - intervalW].isEmpty() && ((x - intervalW) >= 0)) {
+                            intervalW++;
+                        }
+                        //condition 1: either interval cannot be out of bound
+                        //condition 2: second piece has to be an opposite color
+                        if ((x - intervalW) >= 0 && (x - interval1) >= 0) {
+                            if (board[y][x - intervalW].getchess()->isredn() != currentcolor) {
+                                West = true;
+                                options++;
+                                cout << "West" << endl;
+                            }
+                        }
+                    }
+
+                    if (((x + 2) >= 0)) {
+                        //interval needs to be atlesat 1
+                        interval1 = 1;
+                        intervalE = 1;
+
+                        //go to next solid piece.
+                        while (board[y][x + interval1].isEmpty() && ((x + interval1) >= 0)) {
+                            interval1++;
+                        } //go to next non empty piece
+                        intervalE = interval1 + 1;
+                        while (board[y][x + intervalE].isEmpty() && ((x + intervalE) >= 0)) {
+                            intervalE++;
+                        }
+                        //condition 1: either interval cannot be out of bound
+                        //condition 2: second piece has to be an opposite color
+                        if ((x + intervalE) >= 0 && (x + interval1) >= 0) {
+                            if (board[y][x + intervalE].getchess()->isredn() != currentcolor) {
+                                East = true;
+                                options++;
+                                cout << "East" << endl;
+                            }
+                        }
+                    }
+
+
+                    //there is no possible move.
+                    if (options == 0) {
+                        cout << "Invalid move : no possible moves" << endl;
+                        userinput = '\0';
+                    }
+                    else {
+                        userinput = '\0';
+                        userinput = getdirection();
+                    }
+
+                    userinput = tolower(userinput);
+                    if (userinput == 's' && South) {
+                        delete board[y + intervalS][x].getchess();
+                        board[y + intervalS][x].assign(board[y][x].getchess());
+                        board[y][x].assign(nullptr);
+
+                        //Valid move, swap player's turn
+                        if (player1turn) {
+                            player1turn = false;
+                        }
+                        else {
+                            player1turn = true;
+                        }
+                    }
+                    else if (userinput == 'n' && North) {
+                        delete board[y - intervalN][x].getchess();
+                        board[y - intervalN][x].assign(board[y][x].getchess());
+                        board[y][x].assign(nullptr);
+
+                        //Valid move, swap player's turn
+                        if (player1turn) {
+                            player1turn = false;
+                        }
+                        else {
+                            player1turn = true;
+                        }
+                    }
+                    else if (userinput == 'w' && West) {
+                        delete board[y][x - intervalW].getchess();
+                        board[y][x - intervalW].assign(board[y][x].getchess());
+                        board[y][x].assign(nullptr);
+
+                        //Valid move, swap player's turn
+                        if (player1turn) {
+                            player1turn = false;
+                        }
+                        else {
+                            player1turn = true;
+                        }
+                    }
+                    else if (userinput == 'e' && East) {
+                        delete board[y][x + intervalE].getchess();
+                        board[y][x + intervalE].assign(board[y][x].getchess());
+                        board[y][x].assign(nullptr);
+
+                        //Valid move, swap player's turn
+                        if (player1turn) {
+                            player1turn = false;
+                        }
+                        else {
+                            player1turn = true;
+                        }
+                    }
                 
                 
                 }
