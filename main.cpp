@@ -9,16 +9,13 @@
 #include "cannon.h"
 
 void visualizeBoard(Grid board[4][8], sf::RenderWindow& window, sf::Texture& boardTexture, sf::Sprite& bg) {
+    
     //visualize the board after shuffling.
     window.clear();
     boardTexture.loadFromFile("board.png"); //load jpg
     bg.setTexture(boardTexture); //set sprite to board jpg
-    window.draw(bg); //draw board WIP
-
-
-
-
     window.draw(bg);
+    
     for (int i = 0; i < 4; ++i) {
         for (int j = 0; j < 8; ++j) {
             int tempX, tempY;
@@ -49,6 +46,7 @@ void visualizeBoard(Grid board[4][8], sf::RenderWindow& window, sf::Texture& boa
         }
         cout << endl;
     }
+    
     window.display();
 }
 
