@@ -29,7 +29,6 @@ void visualizeBoard(Grid board[4][8], sf::RenderWindow& window, sf::Texture& boa
             if (board[i][j].revealstatus() == true) {
                 if (board[i][j].getchess()->isred() == true) {
                     board[i][j].getchess()->redSprite.setPosition(sf::Vector2f(tempX, tempY));
-
                     window.draw(board[i][j].getchess()->redSprite);
                 }
                 else if (board[i][j].getchess()->isred() == false) {
