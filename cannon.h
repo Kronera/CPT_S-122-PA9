@@ -8,6 +8,14 @@ public:
         //same order as cart.
         _captured_hierarchy = 2;
         //can capture anyone.
-        _capturing_hierarchy = 9;
+        _capturing_hierarchy = 100;
+        redIcon.loadFromFile("Red Cannon.png");
+        blackIcon.loadFromFile("Black Cannon.png");
+
+        redSprite.setTexture(redIcon);
+        blackSprite.setTexture(blackIcon);
+        notRevSprite.setTexture(notRevTexture);
+
+
     }
 };
