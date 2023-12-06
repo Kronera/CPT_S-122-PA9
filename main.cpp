@@ -8,6 +8,7 @@
 #include "king.h"
 #include "cannon.h"
 #include "TestCases.h"
+#include "menu.hpp"
 
 void visualizeBoard(Grid board[4][8], sf::RenderWindow& window, sf::Texture& boardTexture, sf::Sprite& bg) {
     
