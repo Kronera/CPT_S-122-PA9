@@ -42,7 +42,7 @@ void Menu::set_values() {
     }
     texts[1].setOutlineThickness(7);
     pos = 1;
-
+    val = 0;
 }
 
 void Menu::loop_events() {
@@ -82,7 +82,8 @@ void Menu::loop_events() {
             theselect = true;
             if (pos == 1)
             {
-                
+                val = 1;
+                window->close();
             }
             if (pos == 3) {
                 window->close();

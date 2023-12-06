@@ -24,6 +24,7 @@ protected:
     void draw_all();
 
 public:
+    int val;
     Menu();
     ~Menu();
     void run_menu();

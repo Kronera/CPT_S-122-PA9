@@ -56,7 +56,7 @@ int main() {
     int val = 0;
     Menu* menu = new Menu;
     menu->run_menu();
-    val = 1;
+    val = menu->val;
     //Border
     if (val == 1)
     {
@@ -792,7 +792,6 @@ int main() {
             }
             cout << endl;
         }
-
     }
     delete menu;
     menu = nullptr;
