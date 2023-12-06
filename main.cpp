@@ -7,6 +7,7 @@
 #include "guard.h"
 #include "king.h"
 #include "cannon.h"
+#include "TestCases.h"
 
 void visualizeBoard(Grid board[4][8], sf::RenderWindow& window, sf::Texture& boardTexture, sf::Sprite& bg) {
     
@@ -49,88 +50,12 @@ void visualizeBoard(Grid board[4][8], sf::RenderWindow& window, sf::Texture& boa
     window.display();
 }
 
-void printboard(Grid boards[][8]) {
-    for (int i = 0; i < 4; ++i) {
-        for (int j = 0; j < 8; ++j) {
-            boards[i][j].print();
-        }
-        cout << endl;
-    }
-}
-
-void printline(void) {
-    cout << "------------------------------------------------" << endl;
-}
-
-int getx(void) {
-    //get x
-    int x = 0;
-    do {
-        // Prompt the user for input
-        cout << "Enter the x position of your first move." << endl;
-
-        // Get the user's input
-        std::cin >> x;
-
-        // Check if the input is within the valid range
-        if (x < 1 || x > 8) {
-            cout << "Invalid input. Please enter a number between 1 and 8.\n";
-        }
-    } while (x < 1 || x > 8);
-    x--;
-    return x;
-}
-
-int gety(void) {
-    //get y
-    int y = 0;
-    do {
-        // Prompt the user for input
-        cout << "Now enter the y position of your first move." << endl;
-
-        // Get the user's input
-        std::cin >> y;
-
-        // Check if the input is within the valid range
-        if (y < 1 || y > 4) {
-            cout << "Invalid input. Please enter a number between 1 and 4.\n";
-        }
-
-    } while (y < 1 || y > 4);
-    y--;
-    return y;
-}
-
-char getdirection(void) {
-    char direction;
-
-    do {
-        cout << "Enter a direction (S, E, W, N, or Q): " << endl;
-        cin >> direction;
-        direction = toupper(direction); 
-
-        if (direction != 'S' && direction != 'E' && direction != 'W' && direction != 'N' && direction != 'Q') {
-            cout << "Invalid direction. Please enter S, E, W, N, or Q." << endl;
-        }
-    } while (direction != 'S' && direction != 'E' && direction != 'W' && direction != 'N' && direction != 'Q');
-
-    return direction;
-}
-
-bool swapturn(bool turn) {
-    if (turn) {
-        return false;
-    }
-    else {
-        return true;
-    }
-}
 
 int main() {
     int val = 0;
     Menu* menu = new Menu();
     menu->run_menu();
-    val = menu->opt;
+    val = 1;
     delete menu;
     menu = nullptr;
     //Border
@@ -170,6 +95,7 @@ int main() {
     int player1color = -1, currentcolor = -1, placeholder = 0, interval1 = 0, interval2 = 0;
     std::srand(std::time(0));
     bool isgameover = false, player1turn = false;
+    int redpiecesleft = 0, blackpiecesleft = 0;
     //this is for the valid moves in South West East and North cordinates
     /*   N
        W   E
@@ -863,6 +789,15 @@ int main() {
         }
         printline();
 
+        
+        if (blackpiecesleft == 0) {
+            cout << "RED SIDE WON. PIECES LEFT: " << redpiecesleft << endl;
+            isgameover = true;
+        }
+        else if (redpiecesleft == 0) {
+            cout << "BLACK SIDE WON. PIECES LEFT: " << blackpiecesleft << endl;
+            isgameover = true;
+        }
 
     }
 
