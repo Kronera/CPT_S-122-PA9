@@ -1,6 +1,6 @@
 #pragma once
 #define _CRT_SECURE_NO_WARNINGS
-
+#include "SFML/Graphics.hpp"
 #include <iostream>
 #include <fstream>
 #include <string>
@@ -22,40 +22,72 @@ using std::ofstream;
 
 class Base {
 public:
-    Base(bool isred) {
+
+    Base(bool isred) { // parameterized constructor
         _x = 0;
         _y = 0;
         _is_red = isred;
         _name = "default piece";
         _captured_hierarchy = 0;
         _capturing_hierarchy = 0;
+        redIcon.loadFromFile("warning image.png");
+        blackIcon.loadFromFile("warning image.png");
+        
+        redSprite.setTexture(redIcon);
+        blackSprite.setTexture(blackIcon);
+        constructorHelper();
+
+
+    }
+    // loads the unrevealed texture for all pieces
+    void constructorHelper() {
+        notRevTexture.loadFromFile("not rev.png");
+        notRevSprite.setTexture(notRevTexture);
     }
 
-    virtual ~Base();
-    virtual void move(int x, int y);
-    string getname() {
+    virtual ~Base(); // destructor
+
+    // getters
+    string getname() const {
         return _name;
-    } 
-    //shortened for capturing hierachy.
-    int getpower() {
-        return _capturing_hierarchy;
     }
-
-    //shortened for captured hierachy
+    bool isred() const {
+        return _is_red;
+    }
+    int getX() const;
+    int getY() const;
     int getdefense() {
         return _captured_hierarchy;
     }
-
-    bool isred() {
-        return _is_red;
-    }
-
-    //returns isred but in number form (1 for true and otherwise)
     int isredn() {
         if (isred()) return 1;
         return 0;
 
     }
+    int getpower() {
+        return _capturing_hierarchy;
+    }
+
+
+
+
+
+    // setters
+    void setX(int num);
+    void setY(int num);
+
+
+    // member functions
+    virtual void move(int x, int y);
+
+
+    // textures
+    sf::Sprite notRevSprite;
+    sf::Sprite redSprite;
+    sf::Sprite blackSprite;
+    sf::Texture redIcon;
+    sf::Texture blackIcon;
+    sf::Texture notRevTexture;
 
 
 protected:
