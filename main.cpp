@@ -8,6 +8,50 @@
 #include "king.h"
 #include "cannon.h"
 
+void visualizeBoard(Grid board[4][8], sf::RenderWindow& window, sf::Texture& boardTexture, sf::Sprite& bg) {
+    //visualize the board after shuffling.
+    window.clear();
+    boardTexture.loadFromFile("board.png"); //load jpg
+    bg.setTexture(boardTexture); //set sprite to board jpg
+    window.draw(bg); //draw board WIP
+
+
+
+
+    window.draw(bg);
+    for (int i = 0; i < 4; ++i) {
+        for (int j = 0; j < 8; ++j) {
+            int tempX, tempY;
+            if (board[i][j].getchess()->getX() == 0 || board[i][j].getchess()->getY() == 0) {
+                board[i][j].getchess()->setX(26 + (j * 98));
+                board[i][j].getchess()->setY(20 + (i * 99));
+            }
+            tempX = board[i][j].getchess()->getX();
+            tempY = board[i][j].getchess()->getY();
+            board[i][j].reveal();
+            if (board[i][j].revealstatus() == true) {
+                if (board[i][j].getchess()->isred() == true) {
+                    board[i][j].getchess()->redSprite.setPosition(sf::Vector2f(tempX, tempY));
+
+                    window.draw(board[i][j].getchess()->redSprite);
+                }
+                else if (board[i][j].getchess()->isred() == false) {
+                    board[i][j].getchess()->blackSprite.setPosition(sf::Vector2f(tempX, tempY));
+                    window.draw(board[i][j].getchess()->blackSprite);
+                }
+            }
+            else {
+                board[i][j].getchess()->notRevSprite.setPosition(sf::Vector2f(tempX, tempY));
+                window.draw(board[i][j].getchess()->notRevSprite);
+
+            }
+
+        }
+        cout << endl;
+    }
+    window.display();
+}
+
 void printboard(Grid boards[][8]) {
     for (int i = 0; i < 4; ++i) {
         for (int j = 0; j < 8; ++j) {
