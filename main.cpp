@@ -67,7 +67,7 @@ int main() {
         int player1color = -1, currentcolor = -1, placeholder = 0, interval1 = 0, interval2 = 0;
         std::srand(std::time(0));
         bool isgameover = false, player1turn = false;
-        int redpiecesleft = 0, blackpiecesleft = 0;
+        int redpiecesleft = 16, blackpiecesleft = 16;
         //this is for the valid moves in South West East and North cordinates
         /*   N
            W   E
