@@ -10,40 +10,48 @@
 #include "TestCases.h"
 #include "menu.hpp"
 
-static void visualizeBoard(Grid board[4][8], sf::RenderWindow& window, sf::Texture& boardTexture, sf::Sprite& bg) {
+static void visualizeBoard(Grid board[4][8], sf::RenderWindow& window, sf::Sprite& bg) {
 
     //visualize the board after shuffling.
     window.clear();
-    boardTexture.loadFromFile("Board.jpg"); //load jpg
-    bg.setTexture(boardTexture); //set sprite to board jpg
+    
+    
     window.draw(bg);
 
     for (int i = 0; i < 4; ++i) {
         for (int j = 0; j < 8; ++j) {
             int tempX, tempY;
-            if (board[i][j].getchess()->getX() == 0 || board[i][j].getchess()->getY() == 0) {
-                board[i][j].getchess()->setX(26 + (j * 98));
-                board[i][j].getchess()->setY(20 + (i * 99));
-            }
-            tempX = board[i][j].getchess()->getX();
-            tempY = board[i][j].getchess()->getY();
-            board[i][j].reveal();
-            if (board[i][j].revealstatus() == true) {
-                if (board[i][j].getchess()->isred() == true) {
-                    board[i][j].getchess()->redSprite.setPosition(sf::Vector2f(tempX, tempY));
-                    window.draw(board[i][j].getchess()->redSprite);
-                }
-                else if (board[i][j].getchess()->isred() == false) {
-                    board[i][j].getchess()->blackSprite.setPosition(sf::Vector2f(tempX, tempY));
-                    window.draw(board[i][j].getchess()->blackSprite);
-                }
-            }
-            else {
-                board[i][j].getchess()->notRevSprite.setPosition(sf::Vector2f(tempX, tempY));
-                window.draw(board[i][j].getchess()->notRevSprite);
+            if (!board[i][j].isEmpty()) {
 
-            }
+                if (board[i][j].getchess()->getX() == 0 || board[i][j].getchess()->getY() == 0) {
+                    board[i][j].getchess()->setX(26 + (j * 98));
+                    board[i][j].getchess()->setY(20 + (i * 99));
 
+                }
+                else {
+                    board[i][j].getchess()->setX(26 + (j * 98));
+                    board[i][j].getchess()->setY(20 + (i * 99));
+                }
+                tempX = board[i][j].getchess()->getX();
+                tempY = board[i][j].getchess()->getY();
+                
+                //board[i][j].reveal();
+                if (board[i][j].revealstatus() == true) {
+                    if (board[i][j].getchess()->isred() == true) {
+                        board[i][j].getchess()->redSprite.setPosition(sf::Vector2f(tempX, tempY));
+                        window.draw(board[i][j].getchess()->redSprite);
+                    }
+                    else if (board[i][j].getchess()->isred() == false) {
+                        board[i][j].getchess()->blackSprite.setPosition(sf::Vector2f(tempX, tempY));
+                        window.draw(board[i][j].getchess()->blackSprite);
+                    }
+                }
+                else {
+                    board[i][j].getchess()->notRevSprite.setPosition(sf::Vector2f(tempX, tempY));
+                    window.draw(board[i][j].getchess()->notRevSprite);
+
+                }
+            }
         }
         cout << endl;
     }
@@ -58,6 +66,7 @@ int main() {
     menu->run_menu();
     val = menu->val;
     //Border
+
     if (val == 1)
     {
 
@@ -172,8 +181,23 @@ int main() {
 
         boardd = new sf::Texture();
         bg = new sf::Sprite();
-        while (!isgameover) {
-            visualizeBoard(board, window, *boardd, *bg);
+
+        boardd->loadFromFile("Board.jpg"); //load jpg
+        bg->setTexture(*boardd); //set sprite to board jpg
+
+        
+        visualizeBoard(board, window,*bg);
+
+        
+        sf::Event event;
+        
+
+        while (window.isOpen()) {
+            window.pollEvent(event);
+            if (event.type == sf::Event::MouseButtonPressed && event.mouseButton.button == sf::Mouse::Left) {
+                cout << "EEE" << endl;
+            }
+            
             //first move, any move in this step should be valid.
             if (player1color == -1) {
                 cout << "player 1 moving." << endl;
@@ -193,12 +217,10 @@ int main() {
             }
             //start of normal loop
             printline();
-            //printboard(board);
-
-
-
-
-
+            printboard(board);
+            //window.clear();
+            
+            visualizeBoard(board, window,*bg);
             printline();
             //display player color
             cout << "Player colors: ";
@@ -235,7 +257,7 @@ int main() {
             x = getx();
             y = gety();
 
-            visualizeBoard(board, window, *boardd, *bg);
+
             //check if the move is valid, if invalid, the players are not switched.
 
 
@@ -258,7 +280,6 @@ int main() {
                 }
                 //the piece is the same color as the players.
                 else {
-                    printline();
                     //display the possible options in directions
 
                     //this is for non cannon pieces.
@@ -778,31 +799,33 @@ int main() {
 
             }
             printline();
-            visualizeBoard(board, window, *boardd, *bg);
 
+
+            redpiecesleft = 0;
+            blackpiecesleft = 0;
+            for (int i = 0; i < 4; ++i) {
+                for (int j = 0; j < 8; ++j) {
+                    if (!board[i][j].isEmpty()) {
+                        if (board[i][j].getchess()->isred()) {
+                            redpiecesleft++;
+                        }
+                        if (!board[i][j].getchess()->isred()) {
+                            blackpiecesleft++;
+                        }
+                    }
+                }
+            }
             if (blackpiecesleft == 0) {
                 cout << "RED SIDE WON. PIECES LEFT: " << redpiecesleft << endl;
-                isgameover = true;
+                window.close();
             }
             else if (redpiecesleft == 0) {
                 cout << "BLACK SIDE WON. PIECES LEFT: " << blackpiecesleft << endl;
-                isgameover = true;
+                window.close();
             }
 
         }
-
-
-        //cleaning up the board after the game is finished.
-        for (int i = 0; i < 4; ++i) {
-            for (int j = 0; j < 8; ++j) {
-                if (!(board[i][j].isEmpty())) {
-                    delete board[i][j].getchess();
-                    board[i][j].assign(nullptr);
-                }
-            }
-            cout << endl;
-        }
-
+        
     }
     delete menu;
     menu = nullptr;
