@@ -8,7 +8,7 @@ public:
         _chess = nullptr;
     }
 
-    ~Grid(){}
+    ~Grid() {}
 
     void assign(Base* object) {
         _chess = object;
@@ -26,7 +26,7 @@ public:
     //this version prints the piece name if its revealed, and - if its not.
     void print(void) {
         if (_chess == nullptr) {
-            cout << "empty grid ";
+            cout << "== ";
         }
         else {
             if (revealed) {
@@ -39,7 +39,7 @@ public:
                 }
             }
             else {
-                cout << "- ";
+                cout << "-- ";
             }
         }
     }
