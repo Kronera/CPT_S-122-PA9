@@ -32,7 +32,7 @@ public:
         _capturing_hierarchy = 0;
         redIcon.loadFromFile("warning image.png");
         blackIcon.loadFromFile("warning image.png");
-        
+
         redSprite.setTexture(redIcon);
         blackSprite.setTexture(blackIcon);
         constructorHelper();
@@ -69,16 +69,14 @@ public:
     }
 
 
-
+    //poly function
+    virtual void loadtexture(void){}
 
 
     // setters
     void setX(int num);
     void setY(int num);
 
-
-    // member functions
-    virtual void move(int x, int y);
 
 
     // textures
@@ -101,6 +99,4 @@ protected:
     int _y;
 
 private:
-
 };
-
