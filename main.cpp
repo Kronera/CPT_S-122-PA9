@@ -10,11 +10,11 @@
 #include "TestCases.h"
 #include "menu.hpp"
 
-void visualizeBoard(Grid board[4][8], sf::RenderWindow& window, sf::Texture& boardTexture, sf::Sprite& bg) {
+static void visualizeBoard(Grid board[4][8], sf::RenderWindow& window, sf::Texture& boardTexture, sf::Sprite& bg) {
 
     //visualize the board after shuffling.
     window.clear();
-    boardTexture.loadFromFile("board.png"); //load jpg
+    boardTexture.loadFromFile("Board.jpg"); //load jpg
     bg.setTexture(boardTexture); //set sprite to board jpg
     window.draw(bg);
 
@@ -166,9 +166,14 @@ int main() {
             everyone's capturing hierachy is unique, we will use that to display the pieces.
             (for simplicity, king is reduced to 8 and cannon is 9).
         */
+        sf::RenderWindow window(sf::VideoMode(800, 400), "BANQI!"); // create new window
+        sf::Texture* boardd;
+        sf::Sprite* bg;
 
-
+        boardd = new sf::Texture();
+        bg = new sf::Sprite();
         while (!isgameover) {
+            visualizeBoard(board, window, *boardd, *bg);
             //first move, any move in this step should be valid.
             if (player1color == -1) {
                 cout << "player 1 moving." << endl;
@@ -188,7 +193,12 @@ int main() {
             }
             //start of normal loop
             printline();
-            printboard(board);
+            //printboard(board);
+
+
+
+
+
             printline();
             //display player color
             cout << "Player colors: ";
@@ -225,7 +235,7 @@ int main() {
             x = getx();
             y = gety();
 
-
+            visualizeBoard(board, window, *boardd, *bg);
             //check if the move is valid, if invalid, the players are not switched.
 
 
@@ -768,7 +778,7 @@ int main() {
 
             }
             printline();
-
+            visualizeBoard(board, window, *boardd, *bg);
 
             if (blackpiecesleft == 0) {
                 cout << "RED SIDE WON. PIECES LEFT: " << redpiecesleft << endl;
@@ -792,6 +802,7 @@ int main() {
             }
             cout << endl;
         }
+
     }
     delete menu;
     menu = nullptr;
